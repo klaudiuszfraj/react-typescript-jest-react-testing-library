@@ -1,15 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import ScoopOptions from "./ScoopOptions";
-import {Scoops} from '../../types'
+import {Scoop} from '../../types'
 import {Row} from "react-bootstrap";
+import ScoopOptions from "./ScoopOptions";
+import ToppingOption from "./ToppingOption";
 
 
 const Options = ({optionType}: {optionType: 'scoops' | 'toppings'}) => {
-    const [items, setItems] = useState<Scoops[]>([])
+    const [items, setItems] = useState<Scoop[]>([])
 
     useEffect(() => {
-        axios.get<Scoops[]>(`http://localhost:3030/${optionType}`)
+        axios.get<Scoop[]>(`http://localhost:3030/${optionType}`)
             .then((response) => {
                 setItems(response.data)
             })
@@ -18,7 +19,7 @@ const Options = ({optionType}: {optionType: 'scoops' | 'toppings'}) => {
             })
     }, [optionType])
 
-    const ItemComponent = optionType === 'scoops' ? ScoopOptions : null
+    const ItemComponent = optionType === 'scoops' ? ScoopOptions : ToppingOption
 
     const optionsItems = items.map(item =>
         <ItemComponent
