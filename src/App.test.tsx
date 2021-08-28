@@ -18,10 +18,18 @@ test('button click', () => {
   expect(button).toHaveTextContent('Change to red')
 })
 
+test('checkbox initial render', () => {
+  render(<App/>)
+  const button = screen.getByRole('button', {name: 'Change to blue'});
+  expect(button).toBeEnabled();
+  const checkbox = screen.getByRole('checkbox', { name: 'Disable button'})
+  expect(checkbox).not.toBeChecked();
+})
+
 test('checkbox disables button on first click and enable it on second', () => {
   render(<App/>)
   const button = screen.getByRole('button', {name: 'Change to blue'});
-  const checkbox = screen.getByRole('checkbox')
+  const checkbox = screen.getByRole('checkbox', { name: 'Disable button'})
   fireEvent.click(checkbox)
   expect(button).toBeDisabled()
 
