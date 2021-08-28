@@ -4,10 +4,11 @@ import {Scoop} from '../../types'
 import {Row} from "react-bootstrap";
 import ScoopOptions from "./ScoopOptions";
 import ToppingOption from "./ToppingOption";
-
+import AlertBanner from "../common/AlertBanner";
 
 const Options = ({optionType}: {optionType: 'scoops' | 'toppings'}) => {
     const [items, setItems] = useState<Scoop[]>([])
+    const [error, setError] = useState(false)
 
     useEffect(() => {
         axios.get<Scoop[]>(`http://localhost:3030/${optionType}`)
@@ -15,9 +16,13 @@ const Options = ({optionType}: {optionType: 'scoops' | 'toppings'}) => {
                 setItems(response.data)
             })
             .catch(error => {
-                console.log(error);
+                setError(true)
             })
     }, [optionType])
+
+    if (error) {
+        return <AlertBanner />
+    }
 
     const ItemComponent = optionType === 'scoops' ? ScoopOptions : ToppingOption
 
